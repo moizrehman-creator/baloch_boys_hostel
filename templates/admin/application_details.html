@@ -1,0 +1,118 @@
+{% extends "admin/admin_base.html" %}
+{% block title %}{{ application.reference }} — Admin{% endblock %}
+{% block page_title %}Application {{ application.reference }}{% endblock %}
+
+{% block content %}
+
+<div style="margin-bottom:1rem;">
+  <a href="{{ url_for('admin.applications') }}" style="color:var(--text-lo);font-size:0.85rem;">
+    &larr; Back to applications
+  </a>
+</div>
+
+<div class="admin-detail-grid">
+
+  {# ---------- LEFT: applicant data ---------- #}
+  <div>
+
+    <div class="admin-detail-section">
+      <h3>Student Information</h3>
+      <div class="admin-detail-row"><span>Full Name</span><strong>{{ application.full_name }}</strong></div>
+      <div class="admin-detail-row"><span>Father's Name</span><strong>{{ application.father_name }}</strong></div>
+      <div class="admin-detail-row"><span>Date of Birth</span><strong>{{ application.date_of_birth.strftime('%d %B %Y') }}</strong></div>
+      <div class="admin-detail-row"><span>CNIC / B-Form</span><strong>{{ application.cnic }}</strong></div>
+      <div class="admin-detail-row"><span>Phone</span><strong>{{ application.phone }}</strong></div>
+      <div class="admin-detail-row"><span>WhatsApp</span><strong>{{ application.whatsapp or '—' }}</strong></div>
+    </div>
+
+    <div class="admin-detail-section">
+      <h3>Education</h3>
+      <div class="admin-detail-row"><span>Institution</span><strong>{{ application.institution_name }}</strong></div>
+      <div class="admin-detail-row"><span>Class / Degree</span><strong>{{ application.class_degree }}</strong></div>
+      <div class="admin-detail-row"><span>Location</span><strong>{{ application.institution_location }}</strong></div>
+    </div>
+
+    <div class="admin-detail-section">
+      <h3>Guardian</h3>
+      <div class="admin-detail-row"><span>Name</span><strong>{{ application.guardian_name }}</strong></div>
+      <div class="admin-detail-row"><span>Contact</span><strong>{{ application.guardian_contact }}</strong></div>
+      <div class="admin-detail-row"><span>Relationship</span><strong>{{ application.guardian_relationship }}</strong></div>
+      <div class="admin-detail-row"><span>Address</span><strong>{{ application.guardian_address }}</strong></div>
+    </div>
+
+    <div class="admin-detail-section">
+      <h3>Accommodation</h3>
+      <div class="admin-detail-row"><span>Preferred Room</span><strong>{{ application.preferred_room }}</strong></div>
+      <div class="admin-detail-row"><span>Expected Joining</span><strong>{{ application.expected_joining.strftime('%d %B %Y') }}</strong></div>
+      <div class="admin-detail-row"><span>Monthly Budget</span><strong>{% if application.monthly_budget %}PKR {{ "{:,}".format(application.monthly_budget) }}{% else %}—{% endif %}</strong></div>
+      <div class="admin-detail-row"><span>Additional</span><strong>{{ application.additional_requirements or '—' }}</strong></div>
+    </div>
+
+    <div class="admin-detail-section">
+      <h3>Internal Notes</h3>
+      <p style="color:var(--text-lo);font-size:0.82rem;margin:0 0 0.7rem;">
+        These notes are visible to administrators only. They are never shown to applicants.
+      </p>
+      <form method="POST" action="{{ url_for('admin.update_notes', app_id=application.id) }}" class="admin-form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="admin-form__row">
+          <textarea name="internal_notes" placeholder="Add or update notes…">{{ application.internal_notes or '' }}</textarea>
+        </div>
+        <button type="submit" class="admin-btn admin-btn--primary">Save Notes</button>
+      </form>
+    </div>
+
+  </div>
+
+  {# ---------- RIGHT: actions ---------- #}
+  <div>
+
+    <div class="admin-detail-section">
+      <h3>Current Status</h3>
+      <div style="margin-bottom:1rem;">
+        <span class="status-pill status-pill--{{ application.status }}">{{ application.status_label() }}</span>
+      </div>
+
+      <form method="POST" action="{{ url_for('admin.update_status', app_id=application.id) }}" class="admin-form">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="admin-form__row">
+          <label for="status">Change Status</label>
+          <div class="status-select-wrap">
+            <select id="status" name="status">
+              <option value="submitted"    {% if application.status == 'submitted' %}selected{% endif %}>Submitted</option>
+              <option value="under_review" {% if application.status == 'under_review' %}selected{% endif %}>Under Review</option>
+              <option value="approved"     {% if application.status == 'approved' %}selected{% endif %}>Approved</option>
+              <option value="rejected"     {% if application.status == 'rejected' %}selected{% endif %}>Rejected</option>
+              <option value="confirmed"    {% if application.status == 'confirmed' %}selected{% endif %}>Admission Confirmed</option>
+            </select>
+            <button type="submit" class="admin-btn admin-btn--gold">Update</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="admin-detail-section">
+      <h3>Metadata</h3>
+      <div class="admin-detail-row"><span>Reference</span><strong>{{ application.reference }}</strong></div>
+      <div class="admin-detail-row"><span>Submitted</span><strong>{{ application.created_at.strftime('%d %B %Y · %H:%M') }}</strong></div>
+      <div class="admin-detail-row"><span>Last updated</span><strong>{{ application.updated_at.strftime('%d %B %Y · %H:%M') }}</strong></div>
+    </div>
+
+    <div class="admin-detail-section">
+      <h3>Danger Zone</h3>
+      <p style="color:var(--text-lo);font-size:0.82rem;margin:0 0 0.8rem;">
+        Deleting an application is permanent. Prefer setting the status to <em>Rejected</em>.
+      </p>
+      <form method="POST" action="{{ url_for('admin.delete_application', app_id=application.id) }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit" class="admin-btn admin-btn--danger"
+                data-confirm="Delete application {{ application.reference }}? This cannot be undone.">
+          Delete Application
+        </button>
+      </form>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

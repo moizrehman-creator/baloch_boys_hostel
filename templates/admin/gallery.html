@@ -1,0 +1,87 @@
+{% extends "admin/admin_base.html" %}
+{% block title %}Gallery — Admin{% endblock %}
+{% block page_title %}Manage Gallery{% endblock %}
+
+{% block content %}
+<h1 class="admin-h1">Gallery Images</h1>
+<p class="admin-sub">{{ images|length }} image(s) · shown on the public gallery page</p>
+
+{# ---------- Upload ---------- #}
+<div class="admin-card">
+  <h3 style="font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);margin:0 0 1rem;">
+    Upload New Images
+  </h3>
+  <form method="POST" action="{{ url_for('admin.upload_gallery') }}"
+        class="admin-form" enctype="multipart/form-data">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <div class="admin-form__row">
+      <label>Image Files (select multiple)</label>
+      <input type="file" name="images" multiple required
+             accept=".jpg,.jpeg,.png,.webp">
+      <small style="color:var(--text-lo);font-size:0.78rem;display:block;margin-top:0.3rem;">
+        JPG / PNG / WebP · max 5 MB each
+      </small>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;">
+      <div class="admin-form__row">
+        <label>Caption (optional)</label>
+        <input type="text" name="caption" maxlength="200">
+      </div>
+      <div class="admin-form__row">
+        <label>Category (optional)</label>
+        <input type="text" name="category" maxlength="40"
+               placeholder="e.g. Rooms, Building">
+      </div>
+      <div class="admin-form__row">
+        <label>Sort Order</label>
+        <input type="number" name="sort_order" value="0">
+      </div>
+    </div>
+
+    <button type="submit" class="admin-btn admin-btn--primary">Upload</button>
+  </form>
+</div>
+
+{# ---------- Existing ---------- #}
+{% if images and images|length > 0 %}
+  <div class="admin-gallery-grid">
+    {% for img in images %}
+      <div class="admin-gallery-item">
+        <img src="{{ url_for('static', filename='uploads/gallery/' ~ img.filename) }}"
+             alt="{{ img.caption or img.filename }}" loading="lazy">
+        <div class="admin-gallery-item__body">
+          {% if img.caption %}
+            <div style="font-size:0.85rem;color:var(--text-hi);margin-bottom:0.2rem;">
+              {{ img.caption }}
+            </div>
+          {% endif %}
+          <div style="font-size:0.72rem;color:var(--text-lo);">
+            {% if img.category %}{{ img.category }} · {% endif %}
+            Order {{ img.sort_order }} ·
+            {% if img.is_published %}Published{% else %}Hidden{% endif %}
+          </div>
+          <div class="admin-actions" style="margin-top:0.6rem;">
+            <form method="POST" action="{{ url_for('admin.toggle_gallery', img_id=img.id) }}"
+                  style="display:inline;">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button type="submit" class="admin-btn admin-btn--sm">
+                {% if img.is_published %}Hide{% else %}Publish{% endif %}
+              </button>
+            </form>
+            <form method="POST" action="{{ url_for('admin.delete_gallery', img_id=img.id) }}"
+                  style="display:inline;">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button type="submit" class="admin-btn admin-btn--sm admin-btn--danger"
+                      data-confirm="Delete this image permanently?">Delete</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="admin-card admin-empty">No images yet. Upload some above.</div>
+{% endif %}
+{% endblock %}

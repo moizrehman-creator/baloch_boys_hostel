@@ -1,0 +1,398 @@
+{% extends "public/public_base.html" %}
+
+{% block title %}Apply for Admission — Baloch Boys Hostel, Makli, Thatta{% endblock %}
+{% block meta_description %}Apply online for admission to Baloch Boys Hostel, Makli, Thatta. Submit your student information, education and guardian details in five short steps.{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admission.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<section class="section page-hero admission-hero application-page-hero">
+  <div class="page-hero__bg"
+       style="background-image:url('{{ url_for('static', filename='uploads/gallery/admission-hero.jpg') }}');"
+       aria-hidden="true"></div>
+  <div class="page-hero__gradient" aria-hidden="true"></div>
+
+  <div class="container">
+    <div class="page-hero__inner">
+      <nav class="page-hero__breadcrumb" aria-label="Breadcrumb">
+        <a href="{{ url_for('public.home') }}">Home</a>
+        <span aria-hidden="true">/</span>
+        <span>Admission</span>
+      </nav>
+      <h1 data-reveal>Apply for <span class="text-gold">Admission</span></h1>
+      <p class="lead" data-reveal>
+        Five short steps. You'll receive a unique application reference number
+        to track your status.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section admission-section">
+  <div class="container">
+    <div class="admission-wrap">
+
+      {# ---------- Progress indicator ---------- #}
+      <div class="admission-progress" role="progressbar"
+           aria-valuemin="1" aria-valuemax="5" aria-valuenow="1"
+           aria-label="Admission application progress">
+        <div class="admission-progress__track">
+          <div class="admission-progress__fill" id="progressFill"></div>
+        </div>
+        <ol class="admission-progress__steps">
+          <li class="is-active" data-step-label="1"><span>1</span> Student</li>
+          <li data-step-label="2"><span>2</span> Education</li>
+          <li data-step-label="3"><span>3</span> Guardian</li>
+          <li data-step-label="4"><span>4</span> Accommodation</li>
+          <li data-step-label="5"><span>5</span> Review</li>
+        </ol>
+      </div>
+
+      {# ---------- Flash errors from server ---------- #}
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="admission-alerts">
+            {% for category, message in messages %}
+              <div class="admission-alert admission-alert--{{ category }}">
+                {{ message }}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+
+      {# ---------- FORM ---------- #}
+      <form method="POST"
+            action="{{ url_for('public.submit_application') }}"
+            enctype="multipart/form-data"
+            id="admissionForm"
+            class="admission-form glass"
+            novalidate
+            autocomplete="on">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                {# ============================ STEP 1 ============================ #}
+        <fieldset class="step is-active" data-step="1">
+          <legend class="step__legend">
+            <span class="step__kicker">Step 1 of 5</span>
+            <h2 class="step__title">Student Information</h2>
+            <p class="step__desc">Tell us who is applying. This is the student's own information.</p>
+          </legend>
+
+          <div class="field-row">
+            <div class="field">
+              <input type="text" id="full_name" name="full_name"
+                     placeholder=" " required minlength="3" maxlength="120"
+                     value="{{ form_data.full_name if form_data is defined and form_data.full_name else '' }}"
+                     autocomplete="name">
+              <label for="full_name">Full Name <span aria-hidden="true">*</span></label>
+              <small class="field__error" data-error-for="full_name"></small>
+            </div>
+
+            <div class="field">
+              <input type="text" id="father_name" name="father_name"
+                     placeholder=" " required minlength="3" maxlength="120"
+                     value="{{ form_data.father_name if form_data is defined and form_data.father_name else '' }}">
+              <label for="father_name">Father's Name <span aria-hidden="true">*</span></label>
+              <small class="field__error" data-error-for="father_name"></small>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <input type="date" id="date_of_birth" name="date_of_birth"
+                     placeholder=" " required
+                     max="{{ current_date_iso if current_date_iso is defined else '' }}"
+                     value="{{ form_data.date_of_birth if form_data is defined and form_data.date_of_birth else '' }}">
+              <label for="date_of_birth">Date of Birth <span aria-hidden="true">*</span></label>
+              <small class="field__error" data-error-for="date_of_birth"></small>
+            </div>
+
+            <div class="field">
+              <input type="text" id="cnic" name="cnic"
+                     placeholder=" " required
+                     inputmode="numeric"
+                     pattern="[0-9\-]{13,15}"
+                     maxlength="15"
+                     value="{{ form_data.cnic if form_data is defined and form_data.cnic else '' }}">
+              <label for="cnic">CNIC / B-Form <span aria-hidden="true">*</span></label>
+              <small class="field__hint">e.g. 42101-1234567-8</small>
+              <small class="field__error" data-error-for="cnic"></small>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <input type="tel" id="phone" name="phone"
+                     placeholder=" " required
+                     inputmode="tel"
+                     pattern="[0-9+\-\s]{10,20}"
+                     maxlength="20"
+                     autocomplete="tel"
+                     value="{{ form_data.phone if form_data is defined and form_data.phone else '' }}">
+              <label for="phone">Phone Number <span aria-hidden="true">*</span></label>
+              <small class="field__error" data-error-for="phone"></small>
+            </div>
+
+            <div class="field">
+              <input type="tel" id="whatsapp" name="whatsapp"
+                     placeholder=" "
+                     inputmode="tel"
+                     pattern="[0-9+\-\s]{10,20}"
+                     maxlength="20"
+                     autocomplete="tel"
+                     value="{{ form_data.whatsapp if form_data is defined and form_data.whatsapp else '' }}">
+              <label for="whatsapp">WhatsApp Number</label>
+              <small class="field__hint">Leave blank if same as phone</small>
+              <small class="field__error" data-error-for="whatsapp"></small>
+            </div>
+          </div>
+        </fieldset>
+
+        {# ============================ STEP 2 ============================ #}
+        <fieldset class="step" data-step="2">
+          <legend class="step__legend">
+            <span class="step__kicker">Step 2 of 5</span>
+            <h2 class="step__title">Education</h2>
+            <p class="step__desc">Your current or most recent institution.</p>
+          </legend>
+
+          <div class="field-row">
+            <div class="field">
+              <input type="text" id="institution_name" name="institution_name"
+                     placeholder=" " required minlength="2" maxlength="200"
+                     value="{{ form_data.institution_name if form_data is defined and form_data.institution_name else '' }}">
+              <label for="institution_name">Institution Name <span aria-hidden="true">*</span></label>
+              <small class="field__error" data-error-for="institution_name"></small>
+            </div>
+
+            <div class="field">
+              <input type="text" id="class_degree" name="class_degree"
+                     placeholder=" " required minlength="1" maxlength="100"
+                     value="{{ form_data.class_degree if form_data is defined and form_data.class_degree else '' }}">
+              <label for="class_degree">Class / Degree <span aria-hidden="true">*</span></label>
+              <small class="field__error" data-error-for="class_degree"></small>
+            </div>
+          </div>
+
+          <div class="field-row field-row--full">
+            <div class="field">
+              <input type="text" id="institution_location" name="institution_location"
+                     placeholder=" " required minlength="2" maxlength="160"
+                     value="{{ form_data.institution_location if form_data is defined and form_data.institution_location else '' }}">
+              <label for="institution_location">Institution Location <span aria-hidden="true">*</span></label>
+              <small class="field__error" data-error-for="institution_location"></small>
+            </div>
+          </div>
+        </fieldset>
+
+        {# ============================ STEP 3 ============================ #}
+        <fieldset class="step" data-step="3">
+          <legend class="step__legend">
+            <span class="step__kicker">Step 3 of 5</span>
+            <h2 class="step__title">Guardian Details</h2>
+            <p class="step__desc">A parent or guardian we can contact if needed.</p>
+          </legend>
+
+          <div class="field-row">
+            <div class="field">
+              <input type="text" id="guardian_name" name="guardian_name"
+                     placeholder=" " required minlength="3" maxlength="120"
+                     value="{{ form_data.guardian_name if form_data is defined and form_data.guardian_name else '' }}">
+              <label for="guardian_name">Guardian Name <span aria-hidden="true">*</span></label>
+              <small class="field__error" data-error-for="guardian_name"></small>
+            </div>
+
+            <div class="field">
+              <input type="tel" id="guardian_contact" name="guardian_contact"
+                     placeholder=" " required
+                     inputmode="tel"
+                     pattern="[0-9+\-\s]{10,20}"
+                     maxlength="20"
+                     value="{{ form_data.guardian_contact if form_data is defined and form_data.guardian_contact else '' }}">
+              <label for="guardian_contact">Contact Number <span aria-hidden="true">*</span></label>
+              <small class="field__error" data-error-for="guardian_contact"></small>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <select id="guardian_relationship" name="guardian_relationship" required>
+                <option value="" disabled {% if not (form_data is defined and form_data.guardian_relationship) %}selected{% endif %}>Select relationship</option>
+                {% for rel in ['Father', 'Mother', 'Brother', 'Sister', 'Uncle', 'Aunt', 'Other'] %}
+                  <option value="{{ rel }}"
+                    {% if form_data is defined and form_data.guardian_relationship == rel %}selected{% endif %}>
+                    {{ rel }}
+                  </option>
+                {% endfor %}
+              </select>
+              <label for="guardian_relationship" class="field__label-static">Relationship <span aria-hidden="true">*</span></label>
+              <small class="field__error" data-error-for="guardian_relationship"></small>
+            </div>
+          </div>
+
+          <div class="field-row field-row--full">
+            <div class="field">
+              <textarea id="guardian_address" name="guardian_address"
+                        placeholder=" " required minlength="5" maxlength="400" rows="3">{{ form_data.guardian_address if form_data is defined and form_data.guardian_address else '' }}</textarea>
+              <label for="guardian_address">Address <span aria-hidden="true">*</span></label>
+              <small class="field__error" data-error-for="guardian_address"></small>
+            </div>
+          </div>
+        </fieldset>
+
+        {# ============================ STEP 4 ============================ #}
+        <fieldset class="step" data-step="4">
+          <legend class="step__legend">
+            <span class="step__kicker">Step 4 of 5</span>
+            <h2 class="step__title">Accommodation</h2>
+            <p class="step__desc">What you're looking for — we'll confirm details on review.</p>
+          </legend>
+
+          <div class="field-row">
+            <div class="field">
+              <select id="preferred_room" name="preferred_room" required>
+                <option value="" disabled {% if not (form_data is defined and form_data.preferred_room) %}selected{% endif %}>Select room type</option>
+                {% if available_room_types and available_room_types|length > 0 %}
+                  {% for rt in available_room_types %}
+                    <option value="{{ rt.name }}"
+                      {% if form_data is defined and form_data.preferred_room == rt.name %}selected{% endif %}>
+                      {{ rt.name }} ({{ rt.capacity }} beds)
+                    </option>
+                  {% endfor %}
+                {% else %}
+                  <option value="Any">Any available room</option>
+                {% endif %}
+              </select>
+              <label for="preferred_room" class="field__label-static">Preferred Room Type <span aria-hidden="true">*</span></label>
+              <small class="field__error" data-error-for="preferred_room"></small>
+            </div>
+
+            <div class="field">
+              <input type="date" id="expected_joining" name="expected_joining"
+                     placeholder=" " required
+                     min="{{ current_date_iso if current_date_iso is defined else '' }}"
+                     value="{{ form_data.expected_joining if form_data is defined and form_data.expected_joining else '' }}">
+              <label for="expected_joining" class="field__label-static">Expected Joining Date <span aria-hidden="true">*</span></label>
+              <small class="field__error" data-error-for="expected_joining"></small>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <input type="number" id="monthly_budget" name="monthly_budget"
+                     placeholder=" "
+                     min="0" max="1000000" step="500"
+                     value="{{ form_data.monthly_budget if form_data is defined and form_data.monthly_budget else '' }}">
+              <label for="monthly_budget">Monthly Budget (PKR)</label>
+              <small class="field__error" data-error-for="monthly_budget"></small>
+            </div>
+          </div>
+
+          <div class="field-row field-row--full">
+            <div class="field">
+              <textarea id="additional_requirements" name="additional_requirements"
+                        placeholder=" " maxlength="500" rows="3">{{ form_data.additional_requirements if form_data is defined and form_data.additional_requirements else '' }}</textarea>
+              <label for="additional_requirements">Additional Requirements</label>
+              <small class="field__hint">Optional — anything we should know</small>
+              <small class="field__error" data-error-for="additional_requirements"></small>
+            </div>
+          </div>
+        </fieldset>
+
+        {# ============================ STEP 5 ============================ #}
+        <fieldset class="step" data-step="5">
+          <legend class="step__legend">
+            <span class="step__kicker">Step 5 of 5</span>
+            <h2 class="step__title">Review &amp; Confirm</h2>
+            <p class="step__desc">Check your details, then submit.</p>
+          </legend>
+
+          <div class="review" id="reviewGrid" aria-live="polite">
+            {# Populated by JS from the form values #}
+          </div>
+
+          <div class="field field--file">
+            <label for="documents" class="file-label">
+              <span class="file-label__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Z"
+                        stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                  <path d="M14 2v6h6" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+                </svg>
+              </span>
+              <span class="file-label__text">
+                <strong>Upload supporting documents</strong>
+                <small>Optional — PDF, JPG or PNG · max 5 MB each · up to 3 files</small>
+              </span>
+              <input type="file" id="documents" name="documents" multiple
+                     accept=".pdf,.jpg,.jpeg,.png" class="file-input">
+            </label>
+            <ul class="file-list" id="fileList"></ul>
+            <small class="field__error" data-error-for="documents"></small>
+          </div>
+
+          <div class="privacy">
+            <label class="privacy__check">
+              <input type="checkbox" id="privacy_accept" name="privacy_accept" required>
+              <span class="privacy__box" aria-hidden="true"></span>
+              <span class="privacy__text">
+                I confirm the information provided is accurate and I accept the
+                <a href="#" data-open-privacy>privacy statement</a>.
+              </span>
+            </label>
+            <small class="field__error" data-error-for="privacy_accept"></small>
+          </div>
+        </fieldset>
+
+        {# ============================ NAVIGATION ============================ #}
+        <div class="admission-nav">
+          <button type="button" class="btn btn--ghost" id="btnPrev" hidden>
+            &larr; Back
+          </button>
+          <button type="button" class="btn btn--primary" id="btnNext">
+            Continue &rarr;
+          </button>
+          <button type="submit" class="btn btn--gold" id="btnSubmit" hidden>
+            Submit Application
+          </button>
+        </div>
+      </form>
+
+      <p class="admission-foot">
+        Already applied? <a href="{{ url_for('public.application_status') }}">Track your application</a>.
+      </p>
+    </div>
+  </div>
+</section>
+
+{# ---------- Privacy modal (simple, no external lib) ---------- #}
+<div class="privacy-modal" id="privacyModal" role="dialog" aria-modal="true"
+     aria-labelledby="privacyTitle" hidden>
+  <div class="privacy-modal__panel glass glass--hi">
+    <button class="privacy-modal__close" id="privacyClose" aria-label="Close">&times;</button>
+    <h2 id="privacyTitle">Privacy Statement</h2>
+    <p>
+      The information you submit in this application is used only to process your
+      hostel admission at Baloch Boys Hostel. It is stored securely and is not sold,
+      published or shared with third parties. Your application reference and phone
+      number are required to track your application status.
+    </p>
+    <p>
+      Uploaded documents are used solely to verify your identity or education details
+      where required. Only authorised hostel administrators can view application
+      records. You may contact the hostel administration to request correction or
+      deletion of your application data.
+    </p>
+    <button class="btn btn--primary" id="privacyOk">I understand</button>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/admission.js') }}" defer></script>
+{% endblock %}

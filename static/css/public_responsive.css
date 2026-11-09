@@ -1,0 +1,65 @@
+/* ==========================================================================
+   BALOCH BOYS HOSTEL — RESPONSIVE OVERRIDES
+   static/css/public_responsive.css
+   ========================================================================== */
+
+/* ---------- Tablet ---------- */
+@media (max-width: 1024px) {
+  :root { --nav-h: 70px; }
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .grid-3 { grid-template-columns: repeat(2, 1fr); }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .nav-links { gap: 0.1rem; }
+  .nav-links a { padding: 0.5rem 0.65rem; font-size: 0.84rem; }
+}
+
+/* ---------- Mobile nav switch ---------- */
+@media (max-width: 900px) {
+  .nav-links { display: none; }
+  .nav-toggle { display: grid; }
+  .nav-cta .btn--ghost { display: none; }
+
+  .mobile-menu {
+    position: fixed;
+    inset: var(--nav-h) 0 0 0;
+    z-index: 90;
+    background: rgba(5, 10, 24, 0.97);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    padding: 2rem 1.5rem;
+    overflow-y: auto;
+    animation: menuIn var(--dur-med) var(--ease-out);
+  }
+  .mobile-menu ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.25rem; }
+  .mobile-menu a {
+    display: block;
+    padding: 1rem 0.5rem;
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    color: var(--text-hi);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    transition: color var(--dur-fast), padding-left var(--dur-med) var(--ease-out);
+  }
+  .mobile-menu a:hover { color: var(--cyan); padding-left: 0.9rem; }
+  @keyframes menuIn {
+    from { opacity: 0; transform: translateY(-12px); }
+    to   { opacity: 1; transform: none; }
+  }
+}
+
+/* ---------- Small phones ---------- */
+@media (max-width: 640px) {
+  .container { width: calc(100% - 2rem); }
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; gap: 1.75rem; }
+  .footer-bottom { flex-direction: column; align-items: flex-start; gap: 0.4rem; }
+  .brand { font-size: 1rem; }
+  .brand__sub { font-size: 0.55rem; }
+  h1 { font-size: clamp(2.1rem, 9vw, 3rem); }
+  .section { padding: 3.5rem 0; }
+}
+
+/* ---------- Very small / landscape ---------- */
+@media (max-width: 380px) {
+  .nav-cta .btn--primary { padding: 0.6rem 1rem; font-size: 0.8rem; }
+}

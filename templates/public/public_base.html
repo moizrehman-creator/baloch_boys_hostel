@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#050a18">
+
+  <title>{% block title %}Baloch Boys Hostel — Makli, Thatta{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}Comfortable, affordable student accommodation at Baloch Boys Hostel, Makli, Thatta, Sindh. Explore rooms, facilities and apply for admission online.{% endblock %}">
+
+  {# ---- Open Graph ---- #}
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Baloch Boys Hostel">
+  <meta property="og:title" content="{% block og_title %}Baloch Boys Hostel — Your Home Away From Home{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}Student accommodation in Makli, Thatta. Comfortable rooms, quality facilities, online admission.{% endblock %}">
+  <meta property="og:image" content="{% block og_image %}{{ url_for('static', filename='uploads/gallery/og-cover.jpg') }}{% endblock %}">
+  <meta name="twitter:card" content="summary_large_image">
+
+  {# ---- Fonts ---- #}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+  {# ---- CSS (mandatory structure) ---- #}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/public.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/public_responsive.css') }}">
+  {% block extra_css %}{% endblock %}
+
+  {# ---- CSRF meta for JS fetch calls ---- #}
+  {% if csrf_token is defined %}
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  {% endif %}
+
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+  {# ---------- Preloader ---------- #}
+  <div id="preloader" aria-hidden="true">
+    <div class="preloader__ring"></div>
+  </div>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  {# ---------- Navigation ---------- #}
+  <header class="site-nav" id="siteNav">
+    <div class="site-nav__inner">
+      <a href="{{ url_for('public.home') }}" class="brand" aria-label="Baloch Boys Hostel — Home">
+        <span class="brand__mark" aria-hidden="true">B</span>
+        <span>
+          Baloch Boys Hostel
+          <span class="brand__sub">Makli · Thatta</span>
+        </span>
+      </a>
+
+      <nav aria-label="Primary">
+        <ul class="nav-links" id="navLinks">
+          <li><a href="{{ url_for('public.home') }}"      {% if request.endpoint == 'public.home' %}aria-current="page"{% endif %}>Home</a></li>
+          <li><a href="{{ url_for('public.about') }}"     {% if request.endpoint == 'public.about' %}aria-current="page"{% endif %}>About</a></li>
+          <li><a href="{{ url_for('public.facilities') }}"{% if request.endpoint == 'public.facilities' %}aria-current="page"{% endif %}>Facilities</a></li>
+          <li><a href="{{ url_for('public.rooms') }}"     {% if request.endpoint == 'public.rooms' %}aria-current="page"{% endif %}>Rooms</a></li>
+          <li><a href="{{ url_for('public.gallery') }}"   {% if request.endpoint == 'public.gallery' %}aria-current="page"{% endif %}>Gallery</a></li>
+          <li><a href="{{ url_for('public.faq') }}"       {% if request.endpoint == 'public.faq' %}aria-current="page"{% endif %}>FAQ</a></li>
+          <li><a href="{{ url_for('public.contact') }}"   {% if request.endpoint == 'public.contact' %}aria-current="page"{% endif %}>Contact</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-cta">
+        <a href="{{ url_for('public.application_status') }}" class="btn btn--ghost">Track</a>
+        <a href="{{ url_for('public.admission') }}" class="btn btn--primary">Apply</a>
+        <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="mobileMenu" aria-label="Toggle navigation">
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  {# ---------- Mobile menu (rendered but hidden by responsive CSS) ---------- #}
+  <div class="mobile-menu" id="mobileMenu" hidden>
+    <ul>
+      <li><a href="{{ url_for('public.home') }}">Home</a></li>
+      <li><a href="{{ url_for('public.about') }}">About</a></li>
+      <li><a href="{{ url_for('public.facilities') }}">Facilities</a></li>
+      <li><a href="{{ url_for('public.rooms') }}">Rooms</a></li>
+      <li><a href="{{ url_for('public.gallery') }}">Gallery</a></li>
+      <li><a href="{{ url_for('public.admission') }}">Admission</a></li>
+      <li><a href="{{ url_for('public.application_status') }}">Track Application</a></li>
+      <li><a href="{{ url_for('public.faq') }}">FAQ</a></li>
+      <li><a href="{{ url_for('public.contact') }}">Contact</a></li>
+    </ul>
+  </div>
+
+  {# ---------- Flash messages ---------- #}
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="toast-stack" id="toastStack" role="status" aria-live="polite">
+        {% for category, message in messages %}
+          <div class="toast toast--{{ category if category in ['success','error'] else 'success' }}">
+            <span>{{ message }}</span>
+            <button class="toast__close" aria-label="Dismiss">&times;</button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  {# ---------- Main ---------- #}
+  <main id="main">
+    {% block content %}{% endblock %}
+  </main>
+
+  {# ---------- Footer ---------- #}
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <a href="{{ url_for('public.home') }}" class="brand" style="margin-bottom:1rem;">
+            <span class="brand__mark">B</span>
+            <span>Baloch Boys Hostel<span class="brand__sub">Makli · Thatta</span></span>
+          </a>
+          <p style="color:var(--text-mid);font-size:0.92rem;max-width:34ch;">
+            Comfortable, well-managed student accommodation in Makli, Thatta, Sindh, Pakistan.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Explore</h4>
+          <ul class="footer-links">
+            <li><a href="{{ url_for('public.about') }}">About Us</a></li>
+            <li><a href="{{ url_for('public.facilities') }}">Facilities</a></li>
+            <li><a href="{{ url_for('public.rooms') }}">Rooms</a></li>
+            <li><a href="{{ url_for('public.gallery') }}">Gallery</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Admissions</h4>
+          <ul class="footer-links">
+            <li><a href="{{ url_for('public.admission') }}">Apply Online</a></li>
+            <li><a href="{{ url_for('public.application_status') }}">Track Application</a></li>
+            <li><a href="{{ url_for('public.faq') }}">FAQ</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <ul class="footer-links">
+            <li>Makli, Thatta, Sindh, Pakistan</li>
+            {% if site_settings and site_settings.contact_phone %}
+              <li><a href="tel:{{ site_settings.contact_phone }}">{{ site_settings.contact_phone }}</a></li>
+            {% endif %}
+            {% if site_settings and site_settings.whatsapp_number %}
+              <li><a href="https://wa.me/{{ site_settings.whatsapp_number|replace('+','')|replace(' ','') }}" target="_blank" rel="noopener">WhatsApp</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>&copy; {{ current_year if current_year is defined else '2025' }} Baloch Boys Hostel. All rights reserved.</span>
+        <span>Makli · Thatta · Sindh · Pakistan</span>
+      </div>
+    </div>
+  </footer>
+
+  {# ---------- JS (mandatory structure) ---------- #}
+  <script src="{{ url_for('static', filename='js/public.js') }}" defer></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

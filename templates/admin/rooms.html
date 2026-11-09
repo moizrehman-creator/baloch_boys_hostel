@@ -1,0 +1,183 @@
+{% extends "admin/admin_base.html" %}
+{% block title %}Rooms — Admin{% endblock %}
+{% block page_title %}Manage Rooms{% endblock %}
+
+{% block content %}
+<h1 class="admin-h1">Rooms &amp; Accommodation</h1>
+<p class="admin-sub">{{ rooms|length }} room(s) · shown on the public rooms page</p>
+
+{# ---------- Add new room ---------- #}
+<div class="admin-card">
+  <h3 style="font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);margin:0 0 1rem;">
+    Add New Room
+  </h3>
+  <form method="POST" action="{{ url_for('admin.add_room') }}"
+        class="admin-form" enctype="multipart/form-data">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <div class="admin-form__row">
+      <label>Room Name</label>
+      <input type="text" name="name" required maxlength="80"
+             placeholder="e.g. Single Room">
+    </div>
+
+    <div class="admin-form__row">
+      <label>Description (optional)</label>
+      <textarea name="description" maxlength="400"
+                placeholder="Short description shown on the rooms page"></textarea>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+      <div class="admin-form__row">
+        <label>Capacity (beds)</label>
+        <input type="number" name="capacity" value="1" min="1" max="20" required>
+      </div>
+      <div class="admin-form__row">
+        <label>Available Beds</label>
+        <input type="number" name="available_beds" value="0" min="0" max="20" required>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+      <div class="admin-form__row">
+        <label>Monthly Fee (PKR, optional)</label>
+        <input type="number" name="monthly_fee" min="0" placeholder="e.g. 8000">
+      </div>
+      <div class="admin-form__row">
+        <label>Sort Order</label>
+        <input type="number" name="sort_order" value="0">
+      </div>
+    </div>
+
+    <div class="admin-form__row">
+      <label>Room Photo (optional)</label>
+      <input type="file" name="image" accept=".jpg,.jpeg,.png,.webp">
+      <small style="color:var(--text-lo);font-size:0.78rem;display:block;margin-top:0.3rem;">
+        JPG / PNG / WebP · max 5 MB
+      </small>
+    </div>
+
+    <div class="admin-form__row" style="display:flex;gap:1.5rem;flex-wrap:wrap;">
+      <label style="display:flex;align-items:center;gap:0.5rem;text-transform:none;letter-spacing:0;font-size:0.88rem;color:var(--text-mid);">
+        <input type="checkbox" name="is_published" checked style="width:auto;">
+        Show on public site
+      </label>
+      <label style="display:flex;align-items:center;gap:0.5rem;text-transform:none;letter-spacing:0;font-size:0.88rem;color:var(--text-mid);">
+        <input type="checkbox" name="fee_public" style="width:auto;">
+        Show monthly fee publicly
+      </label>
+    </div>
+
+    <button type="submit" class="admin-btn admin-btn--primary">Add Room</button>
+  </form>
+</div>
+
+{# ---------- Existing rooms ---------- #}
+{% if rooms and rooms|length > 0 %}
+  {% for room in rooms %}
+    <div class="admin-card">
+      <div style="display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:flex-start;">
+        <div style="display:flex;gap:1rem;align-items:flex-start;">
+          {% if room.image %}
+            <img src="{{ url_for('static', filename='uploads/gallery/' ~ room.image) }}"
+                 alt="{{ room.name }}"
+                 style="width:80px;height:80px;object-fit:cover;border-radius:var(--r-sm);border:1px solid var(--glass-border);">
+          {% else %}
+            <div style="width:80px;height:80px;border-radius:var(--r-sm);background:rgba(255,255,255,0.04);border:1px solid var(--glass-border);display:grid;place-items:center;color:var(--text-lo);font-size:0.7rem;">
+              No photo
+            </div>
+          {% endif %}
+          <div>
+            <strong style="color:var(--text-hi);font-size:1.05rem;">{{ room.name }}</strong>
+            <div style="font-size:0.82rem;color:var(--text-lo);margin-top:0.15rem;">
+              {{ room.available_beds }} / {{ room.capacity }} beds available ·
+              {% if room.is_published %}Published{% else %}Hidden{% endif %} ·
+              {% if room.fee_public and room.monthly_fee %}PKR {{ "{:,}".format(room.monthly_fee) }}{% else %}Fee hidden{% endif %}
+            </div>
+            {% if room.description %}
+              <p style="color:var(--text-mid);font-size:0.88rem;margin:0.4rem 0 0;">
+                {{ room.description }}
+              </p>
+            {% endif %}
+          </div>
+        </div>
+
+        <div class="admin-actions">
+          <button type="button" class="admin-btn admin-btn--sm"
+                  onclick="document.getElementById('room-edit-{{ room.id }}').style.display =
+                           document.getElementById('room-edit-{{ room.id }}').style.display === 'block' ? 'none' : 'block';">
+            Edit
+          </button>
+          <form method="POST" action="{{ url_for('admin.delete_room', room_id=room.id) }}"
+                style="display:inline;">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="admin-btn admin-btn--sm admin-btn--danger"
+                    data-confirm="Delete room '{{ room.name }}'? This cannot be undone.">
+              Delete
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div id="room-edit-{{ room.id }}" style="display:none;margin-top:1.2rem;padding-top:1.2rem;border-top:1px solid var(--glass-border);">
+        <form method="POST" action="{{ url_for('admin.edit_room', room_id=room.id) }}"
+              class="admin-form" enctype="multipart/form-data">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+          <div class="admin-form__row">
+            <label>Name</label>
+            <input type="text" name="name" value="{{ room.name }}" required maxlength="80">
+          </div>
+
+          <div class="admin-form__row">
+            <label>Description</label>
+            <textarea name="description" maxlength="400">{{ room.description or '' }}</textarea>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;">
+            <div class="admin-form__row">
+              <label>Capacity</label>
+              <input type="number" name="capacity" value="{{ room.capacity }}" min="1" required>
+            </div>
+            <div class="admin-form__row">
+              <label>Available</label>
+              <input type="number" name="available_beds" value="{{ room.available_beds }}" min="0" required>
+            </div>
+            <div class="admin-form__row">
+              <label>Monthly Fee</label>
+              <input type="number" name="monthly_fee" value="{{ room.monthly_fee or '' }}" min="0">
+            </div>
+          </div>
+
+          <div class="admin-form__row">
+            <label>Replace Photo (optional)</label>
+            <input type="file" name="image" accept=".jpg,.jpeg,.png,.webp">
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+            <div class="admin-form__row">
+              <label>Sort Order</label>
+              <input type="number" name="sort_order" value="{{ room.sort_order }}">
+            </div>
+          </div>
+
+          <div class="admin-form__row" style="display:flex;gap:1.5rem;flex-wrap:wrap;">
+            <label style="display:flex;align-items:center;gap:0.5rem;text-transform:none;letter-spacing:0;font-size:0.88rem;color:var(--text-mid);">
+              <input type="checkbox" name="is_published" {% if room.is_published %}checked{% endif %} style="width:auto;">
+              Show on public site
+            </label>
+            <label style="display:flex;align-items:center;gap:0.5rem;text-transform:none;letter-spacing:0;font-size:0.88rem;color:var(--text-mid);">
+              <input type="checkbox" name="fee_public" {% if room.fee_public %}checked{% endif %} style="width:auto;">
+              Show monthly fee publicly
+            </label>
+          </div>
+
+          <button type="submit" class="admin-btn admin-btn--primary">Save Changes</button>
+        </form>
+      </div>
+    </div>
+  {% endfor %}
+{% else %}
+  <div class="admin-card admin-empty">No rooms yet. Add one above.</div>
+{% endif %}
+{% endblock %}

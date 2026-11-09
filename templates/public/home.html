@@ -1,0 +1,523 @@
+{% extends "public/public_base.html" %}
+
+{% block title %}Baloch Boys Hostel — Your Home Away From Home | Makli, Thatta{% endblock %}
+{% block meta_description %}Discover comfortable student accommodation at Baloch Boys Hostel in Makli, Thatta, Sindh. Explore rooms, facilities, and apply for admission online.{% endblock %}
+{% block og_title %}Baloch Boys Hostel — Your Home Away From Home{% endblock %}
+{% block og_description %}Comfortable student accommodation in Makli, Thatta. Explore rooms, facilities and apply online.{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+{% endblock %}
+
+{% block content %}
+
+{# =========================================================
+   SECTION 1 — CINEMATIC HERO
+   ========================================================= #}
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero__bg" aria-hidden="true">
+    {# DB HOOK: hero image should come from site_settings.hero_image if admin uploads one #}
+    <div class="hero__bg-layer hero__bg-layer--1"
+         style="background-image:url('{{ url_for('static', filename='uploads/gallery/hero.jpg') }}');"></div>
+    <div class="hero__bg-gradient"></div>
+    <div class="hero__bg-noise"></div>
+  </div>
+
+  <div class="hero__orb hero__orb--cyan" aria-hidden="true"></div>
+  <div class="hero__orb hero__orb--gold" aria-hidden="true"></div>
+
+  <div class="container hero__inner">
+    <span class="hero__eyebrow" data-reveal="zoom">
+      <span class="hero__dot"></span>
+      Makli · Thatta · Sindh · Pakistan
+    </span>
+
+    <h1 id="hero-title" class="hero__title" data-reveal>
+      <span class="hero__line">Your Home</span>
+      <span class="hero__line">Away From <em>Home</em></span>
+    </h1>
+
+    <p class="hero__lead" data-reveal>
+      Experience comfortable student accommodation at Baloch Boys Hostel, Makli, Thatta.
+    </p>
+
+    <div class="hero__actions" data-reveal>
+      <a href="{{ url_for('public.facilities') }}" class="btn btn--primary">
+        Explore Our Hostel
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <a href="{{ url_for('public.admission') }}" class="btn btn--gold">Apply for Admission</a>
+      <a href="{{ url_for('public.contact') }}" class="btn btn--ghost">Contact Us</a>
+    </div>
+
+    <div class="hero__meta" data-reveal>
+      <div class="hero__meta-item">
+        <strong>5</strong>
+        <span>Core Facilities</span>
+      </div>
+      <div class="hero__meta-sep" aria-hidden="true"></div>
+      <div class="hero__meta-item">
+        <strong>24/7</strong>
+        <span>Electricity & Water</span>
+      </div>
+      <div class="hero__meta-sep" aria-hidden="true"></div>
+      <div class="hero__meta-item">
+        <strong>3×</strong>
+        <span>Daily Meals</span>
+      </div>
+    </div>
+  </div>
+
+  <a href="#welcome" class="hero__scroll" aria-label="Scroll to content">
+    <span>Scroll</span>
+    <span class="hero__scroll-line" aria-hidden="true"></span>
+  </a>
+</section>
+
+{# =========================================================
+   SECTION 2 — WELCOME
+   ========================================================= #}
+<section class="section welcome" id="welcome">
+  <div class="container welcome__grid">
+    <div class="welcome__text">
+      <span class="eyebrow" data-reveal>Welcome</span>
+      <h2 data-reveal>Welcome to <span class="text-gold">Baloch Boys Hostel</span></h2>
+      <p class="lead" data-reveal>
+        A quiet, well-kept residence in Makli, Thatta — designed for students who want a focused,
+        comfortable place to live while they study.
+      </p>
+      <p data-reveal>
+        We keep the essentials simple and reliable: three meals a day, clean drinking water,
+        electricity, beds and Wi-Fi. Nothing invented, nothing padded — just what a student
+        actually needs to settle in and get on with their work.
+      </p>
+      <div class="welcome__cta" data-reveal>
+        <a href="{{ url_for('public.about') }}" class="btn btn--ghost">
+          Learn More About Us
+        </a>
+      </div>
+    </div>
+
+    <div class="welcome__visual" data-reveal="right">
+      <div class="tilt-card" data-tilt>
+        <div class="tilt-card__inner">
+          <img src="{{ url_for('static', filename='uploads/gallery/welcome.jpg') }}"
+               alt="Baloch Boys Hostel — interior view" loading="lazy" width="640" height="800">
+          <div class="tilt-card__overlay">
+            <span class="tilt-card__badge">Est. in Makli</span>
+            <p>Comfortable student living in the heart of Thatta.</p>
+          </div>
+        </div>
+        <div class="tilt-card__glow" aria-hidden="true"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# =========================================================
+   SECTION 3 — ABOUT SNAPSHOT
+   ========================================================= #}
+<section class="section about-snapshot">
+  <div class="container">
+    <div class="section-head section-head--center" data-reveal>
+      <span class="eyebrow">About Our Hostel</span>
+      <h2>A considered place to live and study</h2>
+      <p class="lead">
+        Baloch Boys Hostel is a student residence built around a single idea: give residents a
+        calm, dependable base so they can focus on their education.
+      </p>
+    </div>
+
+    <div class="grid grid-3 about-snapshot__cards">
+      <article class="feature-card glass" data-reveal>
+        <div class="feature-card__icon feature-card__icon--cyan" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none">
+            <path d="M12 2 3 7v6c0 5 4 8 9 9 5-1 9-4 9-9V7l-9-5Z"
+                  stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3>Safe Environment</h3>
+        <p>A quiet, well-managed residence where students can live with peace of mind.</p>
+      </article>
+
+      <article class="feature-card glass" data-reveal>
+        <div class="feature-card__icon feature-card__icon--gold" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none">
+            <path d="M4 20V10l8-6 8 6v10" stroke="currentColor" stroke-width="1.7"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M9 20v-6h6v6" stroke="currentColor" stroke-width="1.7"
+                  stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3>Comfortable Rooms</h3>
+        <p>Clean beds, real furniture, and a layout that respects a student's daily routine.</p>
+      </article>
+
+      <article class="feature-card glass" data-reveal>
+        <div class="feature-card__icon feature-card__icon--cyan" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none">
+            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/>
+            <path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.7"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3>Student Focused</h3>
+        <p>Three meals a day, clean water, Wi-Fi and electricity — the essentials, done properly.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+{# =========================================================
+   SECTION 4 — FACILITIES
+   ========================================================= #}
+<section class="section facilities-preview">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow">Facilities</span>
+      <h2>What's included, clearly</h2>
+      <p class="lead">
+        These are the confirmed facilities provided at Baloch Boys Hostel.
+        No extras are implied.
+      </p>
+    </div>
+
+    <div class="facility-grid">
+      {% set facility_list = [
+        ('Three Times Meal', 'Three meals served daily for residents.', 'meal'),
+        ('Clean Drinking Water', 'Filtered drinking water available at all times.', 'water'),
+        ('Wi-Fi', 'Internet access across the hostel.', 'wifi'),
+        ('Electricity', 'Reliable electricity supply for residents.', 'power'),
+        ('Beds', 'A bed provided for every resident.', 'bed')
+      ] %}
+
+      {% for title, desc, icon in facility_list %}
+      <article class="facility-card glass" data-reveal>
+        <div class="facility-card__icon facility-card__icon--{{ icon }}" aria-hidden="true">
+          {% if icon == 'meal' %}
+            <svg viewBox="0 0 24 24" width="30" height="30" fill="none">
+              <path d="M4 3v7a3 3 0 0 0 6 0V3M7 10v11M15 3c-1.5 1-2 3-2 5v4h4V8c0-2-.5-4-2-5ZM15 12v9"
+                    stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          {% elif icon == 'water' %}
+            <svg viewBox="0 0 24 24" width="30" height="30" fill="none">
+              <path d="M12 3s6 6.5 6 11a6 6 0 1 1-12 0c0-4.5 6-11 6-11Z"
+                    stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+            </svg>
+          {% elif icon == 'wifi' %}
+            <svg viewBox="0 0 24 24" width="30" height="30" fill="none">
+              <path d="M2.5 9a15 15 0 0 1 19 0M5.5 12.5a10.5 10.5 0 0 1 13 0M8.5 16a6 6 0 0 1 7 0"
+                    stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              <circle cx="12" cy="19.5" r="1.4" fill="currentColor"/>
+            </svg>
+          {% elif icon == 'power' %}
+            <svg viewBox="0 0 24 24" width="30" height="30" fill="none">
+              <path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"
+                    stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+            </svg>
+          {% else %}
+            <svg viewBox="0 0 24 24" width="30" height="30" fill="none">
+              <path d="M3 18v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6M3 18h18M6 10V7a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v3"
+                    stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          {% endif %}
+        </div>
+        <h3>{{ title }}</h3>
+        <p>{{ desc }}</p>
+      </article>
+      {% endfor %}
+    </div>
+
+    <div class="section-foot" data-reveal>
+      <a href="{{ url_for('public.facilities') }}" class="btn btn--ghost">View All Facilities</a>
+    </div>
+  </div>
+</section>
+
+{# =========================================================
+   SECTION 5 — ROOMS & ACCOMMODATION (DB-DRIVEN)
+   ========================================================= #}
+<section class="section rooms-preview">
+  <div class="container">
+    <div class="section-head" data-reveal>
+      <span class="eyebrow">Accommodation</span>
+      <h2>Rooms &amp; Availability</h2>
+      <p class="lead">
+        Live availability from our system. Apply for admission to reserve a bed.
+      </p>
+    </div>
+
+    {% if featured_rooms and featured_rooms|length > 0 %}
+      <div class="grid grid-3 room-grid">
+        {% for room in featured_rooms[:3] %}
+        <article class="room-card glass" data-reveal>
+          <div class="room-card__media">
+            {% if room.image %}
+              <img src="{{ url_for('static', filename='uploads/gallery/' ~ room.image) }}"
+                   alt="{{ room.name or 'Room' }} at Baloch Boys Hostel" loading="lazy">
+            {% else %}
+              <div class="room-card__placeholder" aria-hidden="true">
+                <span>Room photo</span>
+              </div>
+            {% endif %}
+            <span class="room-card__status
+                  {% if room.available_beds and room.available_beds > 0 %}is-available{% else %}is-full{% endif %}">
+              {% if room.available_beds and room.available_beds > 0 %}
+                Available
+              {% else %}
+                Fully Occupied
+              {% endif %}
+            </span>
+          </div>
+          <div class="room-card__body">
+            <h3>{{ room.name }}</h3>
+            <ul class="room-card__meta">
+              <li><span>Capacity</span><strong>{{ room.capacity }} beds</strong></li>
+              <li><span>Available</span><strong>{{ room.available_beds }} beds</strong></li>
+              {% if room.monthly_fee and room.fee_public %}
+              <li><span>Monthly</span><strong>PKR {{ "{:,}".format(room.monthly_fee) }}</strong></li>
+              {% endif %}
+            </ul>
+            <a href="{{ url_for('public.admission') }}" class="btn btn--primary room-card__cta">
+              Apply for Admission
+            </a>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      {# DB HOOK: no rooms passed by the route yet #}
+      <div class="empty-state glass" data-reveal>
+        <div class="empty-state__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="none">
+            <path d="M3 18v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6M3 18h18M6 10V7a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v3"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3>Room details are being updated</h3>
+        <p>Please contact us directly for current room availability and bed counts.</p>
+        <a href="{{ url_for('public.contact') }}" class="btn btn--ghost">Contact Us</a>
+      </div>
+    {% endif %}
+
+    <div class="section-foot" data-reveal>
+      <a href="{{ url_for('public.rooms') }}" class="btn btn--ghost">View All Rooms</a>
+    </div>
+  </div>
+</section>
+
+{# =========================================================
+   SECTION 6 — GALLERY PREVIEW
+   ========================================================= #}
+<section class="section gallery-preview">
+  <div class="container">
+    <div class="section-head section-head--center" data-reveal>
+      <span class="eyebrow">Gallery</span>
+      <h2>A look around</h2>
+      <p class="lead">Real photographs of the hostel and its rooms.</p>
+    </div>
+
+    {% if gallery_images and gallery_images|length > 0 %}
+      <div class="masonry">
+        {% for img in gallery_images[:6] %}
+          <figure class="masonry__item" data-reveal>
+            <a href="{{ url_for('static', filename='uploads/gallery/' ~ img.filename) }}"
+               class="masonry__link" data-lightbox>
+              <img src="{{ url_for('static', filename='uploads/gallery/' ~ img.filename) }}"
+                   alt="{{ img.caption or 'Baloch Boys Hostel photo' }}" loading="lazy">
+              {% if img.caption %}<figcaption>{{ img.caption }}</figcaption>{% endif %}
+            </a>
+          </figure>
+        {% endfor %}
+      </div>
+    {% else %}
+      {# DB HOOK: gallery_images not passed yet #}
+      <div class="empty-state glass" data-reveal>
+        <p>Gallery photographs will appear here once uploaded by the hostel administration.</p>
+      </div>
+    {% endif %}
+
+    <div class="section-foot" data-reveal>
+      <a href="{{ url_for('public.gallery') }}" class="btn btn--ghost">Open Full Gallery</a>
+    </div>
+  </div>
+</section>
+
+{# =========================================================
+   SECTION 7 — WHY CHOOSE US
+   ========================================================= #}
+<section class="section why">
+  <div class="container why__grid">
+    <div class="why__text">
+      <span class="eyebrow" data-reveal>Why Choose Us</span>
+      <h2 data-reveal>Built around student life</h2>
+      <p class="lead" data-reveal>
+        We don't try to be everything. We try to be reliable.
+      </p>
+
+      <ul class="why__list">
+        <li data-reveal>
+          <span class="why__num">01</span>
+          <div>
+            <h3>Meals Included</h3>
+            <p>Three meals a day — no cooking, no missed meals.</p>
+          </div>
+        </li>
+        <li data-reveal>
+          <span class="why__num">02</span>
+          <div>
+            <h3>Clean Water</h3>
+            <p>Filtered drinking water available throughout the day.</p>
+          </div>
+        </li>
+        <li data-reveal>
+          <span class="why__num">03</span>
+          <div>
+            <h3>Wi-Fi &amp; Electricity</h3>
+            <p>Stay connected and powered, day and night.</p>
+          </div>
+        </li>
+        <li data-reveal>
+          <span class="why__num">04</span>
+          <div>
+            <h3>A Bed for Every Resident</h3>
+            <p>Every resident is guaranteed a bed — no sharing beyond capacity.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="why__visual" data-reveal="right">
+      <div class="why__stack">
+        <div class="why__card glass">
+          <span class="why__card-label">Location</span>
+          <strong>Makli, Thatta</strong>
+          <p>Sindh, Pakistan</p>
+        </div>
+        <div class="why__card glass">
+          <span class="why__card-label">Meals</span>
+          <strong>3× per day</strong>
+          <p>Breakfast, lunch, dinner</p>
+        </div>
+        <div class="why__card glass">
+          <span class="why__card-label">Focus</span>
+          <strong>Students first</strong>
+          <p>A quiet place to study</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# =========================================================
+   SECTION 8 — ADMISSION PROCESS
+   ========================================================= #}
+<section class="section process">
+  <div class="container">
+    <div class="section-head section-head--center" data-reveal>
+      <span class="eyebrow">Admission</span>
+      <h2>How to apply</h2>
+      <p class="lead">A short, clear process — start to finish online.</p>
+    </div>
+
+    <ol class="process__steps">
+      <li class="process__step glass" data-reveal>
+        <span class="process__num">01</span>
+        <h3>Submit Application</h3>
+        <p>Fill the online form with your student, education and guardian details.</p>
+      </li>
+      <li class="process__step glass" data-reveal>
+        <span class="process__num">02</span>
+        <h3>Receive Reference</h3>
+        <p>Get a unique application reference number to track your status.</p>
+      </li>
+      <li class="process__step glass" data-reveal>
+        <span class="process__num">03</span>
+        <h3>Review</h3>
+        <p>The hostel administration reviews your application and confirms details.</p>
+      </li>
+      <li class="process__step glass" data-reveal>
+        <span class="process__num">04</span>
+        <h3>Confirmation</h3>
+        <p>Once approved, your admission is confirmed and you can move in.</p>
+      </li>
+    </ol>
+
+    <div class="section-foot" data-reveal>
+      <a href="{{ url_for('public.admission') }}" class="btn btn--primary">Start Your Application</a>
+      <a href="{{ url_for('public.application_status') }}" class="btn btn--ghost">Track an Application</a>
+    </div>
+  </div>
+</section>
+
+{# =========================================================
+   SECTION 9 — FAQ PREVIEW
+   ========================================================= #}
+<section class="section faq-preview">
+  <div class="container faq-preview__grid">
+    <div class="faq-preview__intro" data-reveal>
+      <span class="eyebrow">FAQ</span>
+      <h2>Common questions</h2>
+      <p class="lead">Short answers to the questions we're asked most.</p>
+      <a href="{{ url_for('public.faq') }}" class="btn btn--ghost">See All FAQs</a>
+    </div>
+
+    <div class="faq-preview__items">
+      {% set faq_items = [
+        ('What facilities are provided?', 'Three meals a day, clean drinking water, Wi-Fi, electricity and a bed for every resident.'),
+        ('Where is Baloch Boys Hostel located?', 'In Makli, Thatta, Sindh, Pakistan.'),
+        ('How do I apply for admission?', 'Submit the online admission form. You will receive a reference number to track your application.'),
+        ('Can I track my application?', 'Yes. Use the Track Application page with your reference number and registered phone number.')
+      ] %}
+
+      {% for q, a in faq_items %}
+      <details class="faq-item glass" data-reveal>
+        <summary>
+          <span>{{ q }}</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </summary>
+        <p>{{ a }}</p>
+      </details>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{# =========================================================
+   SECTION 10 — CONTACT STRIP
+   ========================================================= #}
+<section class="section contact-strip">
+  <div class="container contact-strip__inner glass glass--hi" data-reveal>
+    <div class="contact-strip__text">
+      <span class="eyebrow">Get in Touch</span>
+      <h2>Visit or contact us</h2>
+      <p>Baloch Boys Hostel · Makli, Thatta, Sindh, Pakistan</p>
+
+      {% if site_settings and site_settings.contact_phone %}
+        <p class="contact-strip__phone">
+          <a href="tel:{{ site_settings.contact_phone }}">{{ site_settings.contact_phone }}</a>
+        </p>
+      {% endif %}
+    </div>
+
+    <div class="contact-strip__actions">
+      <a href="{{ url_for('public.contact') }}" class="btn btn--primary">Contact Page</a>
+      {% if site_settings and site_settings.whatsapp_number %}
+        <a href="https://wa.me/{{ site_settings.whatsapp_number|replace('+','')|replace(' ','') }}"
+           class="btn btn--gold" target="_blank" rel="noopener">WhatsApp</a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/home.js') }}" defer></script>
+{% endblock %}

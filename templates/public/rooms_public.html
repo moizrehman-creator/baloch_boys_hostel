@@ -1,0 +1,130 @@
+{% extends "public/public_base.html" %}
+
+{% block title %}Rooms &amp; Accommodation — Baloch Boys Hostel, Makli, Thatta{% endblock %}
+{% block meta_description %}View room types, capacity and live availability at Baloch Boys Hostel, Makli, Thatta. Apply for admission online.{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<section class="page-hero">
+  <div class="page-hero__bg"
+       style="background-image:url('{{ url_for('static', filename='uploads/gallery/rooms-hero.jpg') }}');"
+       aria-hidden="true"></div>
+  <div class="page-hero__gradient" aria-hidden="true"></div>
+
+  <div class="container">
+    <div class="page-hero__inner">
+      <nav class="page-hero__breadcrumb" aria-label="Breadcrumb">
+        <a href="{{ url_for('public.home') }}">Home</a>
+        <span aria-hidden="true">/</span>
+        <span>Rooms</span>
+      </nav>
+      <h1 data-reveal>Rooms &amp; <span class="text-gold">Accommodation</span></h1>
+      <p class="lead" data-reveal>
+        Live availability from our system. Room photographs are of the actual hostel.
+        No student names or private occupant details are ever shown here.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    {% if rooms and rooms|length > 0 %}
+      <div class="rooms-grid">
+        {% for room in rooms %}
+        <article class="glass room-detail-card" data-reveal>
+          <div class="room-detail-card__media">
+            {% if room.image %}
+              <img src="{{ url_for('static', filename='uploads/gallery/' ~ room.image) }}"
+                   alt="{{ room.name or 'Room' }} at Baloch Boys Hostel"
+                   loading="lazy">
+            {% else %}
+              <div class="room-detail-card__placeholder" aria-hidden="true">
+                <span>Room photo</span>
+              </div>
+            {% endif %}
+            <span class="room-card__status
+                  {% if room.available_beds and room.available_beds > 0 %}is-available{% else %}is-full{% endif %}"
+                  style="position:absolute;top:1rem;right:1rem;">
+              {% if room.available_beds and room.available_beds > 0 %}
+                Available
+              {% else %}
+                Fully Occupied
+              {% endif %}
+            </span>
+          </div>
+
+          <div class="room-detail-card__body">
+            <h3>{{ room.name }}</h3>
+            {% if room.description %}
+              <p class="room-detail-card__desc">{{ room.description }}</p>
+            {% endif %}
+
+            <ul class="room-detail-card__meta">
+              <li><span>Capacity</span><strong>{{ room.capacity }} beds</strong></li>
+              <li>
+                <span>Available</span>
+                <strong>
+                  {{ room.available_beds if room.available_beds is not none else '—' }} beds
+                </strong>
+              </li>
+              {% if room.monthly_fee and room.fee_public %}
+              <li>
+                <span>Monthly fee</span>
+                <strong>PKR {{ "{:,}".format(room.monthly_fee) }}</strong>
+              </li>
+              {% endif %}
+            </ul>
+
+            {% if room.available_beds and room.available_beds > 0 %}
+              <a href="{{ url_for('public.admission') }}" class="btn btn--primary room-detail-card__cta">
+                Apply for Admission
+              </a>
+            {% else %}
+              <a class="btn btn--ghost room-detail-card__cta" aria-disabled="true" tabindex="-1">
+                No Beds Available
+              </a>
+            {% endif %}
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="glass empty-state" data-reveal>
+        <div class="empty-state__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="none">
+            <path d="M3 18v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6M3 18h18M6 10V7a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v3"
+                  stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3>Room information is being updated</h3>
+        <p>
+          Room details and availability are not published at this moment.
+          Please contact the hostel directly for current room availability.
+        </p>
+        <a href="{{ url_for('public.contact') }}" class="btn btn--ghost">Contact Us</a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="glass glass--hi" style="padding:clamp(2rem,4vw,3rem);text-align:center;" data-reveal>
+      <h2 style="margin-bottom:0.7rem;">Apply for your room</h2>
+      <p style="color:var(--text-mid);max-width:52ch;margin:0 auto 1.5rem;">
+        Submit your online application and track its status using your reference number.
+      </p>
+      <div style="display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;">
+        <a href="{{ url_for('public.admission') }}" class="btn btn--primary">Apply Now</a>
+        <a href="{{ url_for('public.application_status') }}" class="btn btn--ghost">Track Application</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

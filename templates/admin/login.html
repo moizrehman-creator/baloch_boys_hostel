@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Login — Baloch Boys Hostel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/public.css') }}">
+  <style>
+    body { display: grid; place-items: center; min-height: 100vh; padding: 1.5rem; }
+    .login-card {
+      width: min(420px, 100%);
+      padding: clamp(1.8rem, 5vw, 2.6rem);
+      text-align: center;
+    }
+    .login-card h1 { font-size: 1.6rem; margin-bottom: 0.4rem; }
+    .login-card p.sub { color: var(--text-lo); margin: 0 0 1.6rem; font-size: 0.88rem; }
+    .login-card .field { margin-bottom: 1rem; text-align: left; }
+    .login-err {
+      padding: 0.8rem 1rem;
+      border-radius: var(--r-sm);
+      background: rgba(255, 94, 125, 0.1);
+      border: 1px solid rgba(255, 94, 125, 0.4);
+      color: #ffd5dd;
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+    }
+    .login-card .btn { width: 100%; margin-top: 0.4rem; }
+        .field { position: relative; }
+    .field input {
+      width: 100%;
+      padding: 1.15rem 1rem 0.55rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--r-md);
+      color: var(--text-hi);
+      font-family: inherit;
+      font-size: 0.95rem;
+      outline: none;
+    }
+    .field input:focus { border-color: var(--cyan); box-shadow: 0 0 0 4px rgba(0,229,255,0.1); }
+    .field input + label {
+      position: absolute;
+      left: 1rem; top: 1.15rem;
+      font-size: 0.9rem;
+      color: var(--text-lo);
+      pointer-events: none;
+      transition: all 200ms;
+    }
+    .field input:focus + label,
+    .field input:not(:placeholder-shown) + label {
+      top: 0.45rem;
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--cyan);
+    }
+  </style>
+</head>
+<body>
+  <form method="POST" class="login-card glass glass--hi">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <a href="{{ url_for('public.home') }}" class="brand" style="justify-content:center;margin-bottom:1.2rem;">
+      <span class="brand__mark">B</span>
+      <span>Baloch Boys Hostel<span class="brand__sub">Admin</span></span>
+    </a>
+
+    <h1>Admin Login</h1>
+    <p class="sub">Sign in to manage the website</p>
+
+    {% if error %}
+      <div class="login-err">{{ error }}</div>
+    {% endif %}
+
+    <div class="field">
+      <input type="text" id="username" name="username" placeholder=" " required autofocus autocomplete="username">
+      <label for="username">Username</label>
+    </div>
+
+    <div class="field">
+      <input type="password" id="password" name="password" placeholder=" " required autocomplete="current-password">
+      <label for="password">Password</label>
+    </div>
+
+    <button type="submit" class="btn btn--primary">Sign In</button>
+  </form>
+</body>
+</html>

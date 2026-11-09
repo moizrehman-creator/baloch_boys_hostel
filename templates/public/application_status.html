@@ -1,0 +1,154 @@
+{% extends "public/public_base.html" %}
+
+{% block title %}Track Application — Baloch Boys Hostel{% endblock %}
+{% block meta_description %}Track your Baloch Boys Hostel admission application using your reference number and registered phone number.{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admission.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<section class="section page-hero application-page-hero">
+  <div class="page-hero__bg"
+       style="background-image:url('{{ url_for('static', filename='uploads/gallery/admission-hero.jpg') }}');"
+       aria-hidden="true"></div>
+  <div class="page-hero__gradient" aria-hidden="true"></div>
+
+  <div class="container">
+    <div class="page-hero__inner">
+      <nav class="page-hero__breadcrumb" aria-label="Breadcrumb">
+        <a href="{{ url_for('public.home') }}">Home</a>
+        <span aria-hidden="true">/</span>
+        <span>Track Application</span>
+      </nav>
+      <h1 data-reveal>Track Your <span class="text-gold">Application</span></h1>
+      <p class="lead" data-reveal>
+        Enter your reference number and the phone number you registered with.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section admission-section">
+  <div class="container">
+    <div class="admission-wrap">
+
+      {# ---------- Search form ---------- #}
+      <form method="POST" class="glass admission-form" autocomplete="off">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+        <div class="step__legend" style="margin-bottom:1.6rem;">
+          <span class="step__kicker">Verification</span>
+          <h2 class="step__title" style="font-size:1.4rem;">Application lookup</h2>
+        </div>
+
+        {% if error %}
+          <div class="admission-alerts" style="margin-bottom:1.2rem;">
+            <div class="admission-alert admission-alert--error">{{ error }}</div>
+          </div>
+        {% endif %}
+
+        <div class="field-row">
+          <div class="field">
+            <input type="text" id="reference" name="reference"
+                   placeholder=" " required
+                   value="{{ request.form.reference or '' }}"
+                   autocapitalize="characters"
+                   style="text-transform:uppercase;">
+            <label for="reference">Reference Number</label>
+            <small class="field__hint">e.g. BBH-2611-A1B2C3</small>
+          </div>
+
+          <div class="field">
+            <input type="tel" id="phone" name="phone"
+                   placeholder=" " required
+                   value="{{ request.form.phone or '' }}">
+            <label for="phone">Registered Phone Number</label>
+          </div>
+        </div>
+
+        <div class="admission-nav" style="justify-content:flex-end;">
+          <button type="submit" class="btn btn--primary">Check Status</button>
+        </div>
+      </form>
+
+      {# ---------- Result ---------- #}
+      {% if result %}
+        {% set statuses = ['submitted', 'under_review', 'approved', 'confirmed'] %}
+        {% set rejected = result.status == 'rejected' %}
+        {% set current_index = statuses.index(result.status) if result.status in statuses else 0 %}
+
+        <div class="glass glass--hi tracking-card" style="margin-top:1.5rem;padding:clamp(1.6rem,4vw,2.4rem);">
+
+          <div class="tracking-header">
+            <div>
+              <span class="eyebrow" style="margin-bottom:0.5rem;">Application</span>
+              <h2 style="margin:0 0 0.4rem;font-size:clamp(1.4rem,3vw,1.9rem);">{{ result.reference }}</h2>
+              <p style="color:var(--text-mid);margin:0;">
+                Submitted {{ result.created_at.strftime('%d %B %Y') }}
+              </p>
+            </div>
+
+            <div class="tracking-badge tracking-badge--{{ result.status }}">
+              {{ result.status_label() }}
+            </div>
+          </div>
+
+          {% if rejected %}
+            <div class="tracking-note tracking-note--rejected">
+              <strong>Application not approved.</strong>
+              <p style="margin:0.4rem 0 0;">
+                Please contact the hostel administration for more information.
+              </p>
+            </div>
+          {% else %}
+            <ol class="tracking-timeline">
+              {% for s in statuses %}
+                {% set idx = loop.index0 %}
+                {% set label = {
+                  'submitted':    'Application Submitted',
+                  'under_review': 'Under Review',
+                  'approved':     'Approved',
+                  'confirmed':    'Admission Confirmed'
+                }[s] %}
+                <li class="tracking-step
+                    {% if idx < current_index %}is-complete
+                    {% elif idx == current_index %}is-current{% endif %}">
+                  <span class="tracking-step__dot" aria-hidden="true"></span>
+                  <span class="tracking-step__label">{{ label }}</span>
+                </li>
+              {% endfor %}
+            </ol>
+          {% endif %}
+
+          <div class="tracking-summary">
+            <div class="tracking-summary__row">
+              <span>Applicant</span>
+              <strong>{{ result.full_name }}</strong>
+            </div>
+            <div class="tracking-summary__row">
+              <span>Preferred room</span>
+              <strong>{{ result.preferred_room }}</strong>
+            </div>
+            <div class="tracking-summary__row">
+              <span>Expected joining</span>
+              <strong>{{ result.expected_joining.strftime('%d %B %Y') }}</strong>
+            </div>
+          </div>
+
+          <p style="color:var(--text-lo);font-size:0.82rem;margin-top:1.4rem;">
+            Only limited information is shown here. For anything else, please contact the hostel directly.
+          </p>
+        </div>
+      {% endif %}
+
+      <p class="admission-foot">
+        Don't have a reference? <a href="{{ url_for('public.admission') }}">Apply for admission</a>.
+      </p>
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}

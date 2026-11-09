@@ -1,0 +1,88 @@
+{% extends "admin/admin_base.html" %}
+{% block title %}FAQs — Admin{% endblock %}
+{% block page_title %}Manage FAQs{% endblock %}
+
+{% block content %}
+<h1 class="admin-h1">Frequently Asked Questions</h1>
+<p class="admin-sub">{{ items|length }} total · shown on the public FAQ page</p>
+
+{# ---------- Add new ---------- #}
+<div class="admin-card">
+  <h3 style="font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);margin:0 0 1rem;">
+    Add New FAQ
+  </h3>
+  <form method="POST" action="{{ url_for('admin.add_faq') }}" class="admin-form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="admin-form__row">
+      <label>Question</label>
+      <input type="text" name="question" required maxlength="300">
+    </div>
+    <div class="admin-form__row">
+      <label>Answer</label>
+      <textarea name="answer" required></textarea>
+    </div>
+    <div class="admin-form__row">
+      <label>Sort order (lower appears first)</label>
+      <input type="number" name="sort_order" value="0">
+    </div>
+    <button type="submit" class="admin-btn admin-btn--primary">Add FAQ</button>
+  </form>
+</div>
+
+{# ---------- Existing ---------- #}
+{% if items and items|length > 0 %}
+  {% for item in items %}
+    <div class="faq-admin-item">
+      <div class="faq-admin-item__head">
+        <div>
+          <div class="faq-admin-item__q">{{ item.question }}</div>
+          <div style="font-size:0.75rem;color:var(--text-lo);margin-top:0.2rem;">
+            Order {{ item.sort_order }} ·
+            {% if item.is_published %}Published{% else %}Hidden{% endif %}
+          </div>
+        </div>
+        <div class="admin-actions">
+          <button type="button" class="admin-btn admin-btn--sm"
+                  onclick="document.getElementById('edit-{{ item.id }}').style.display =
+                           document.getElementById('edit-{{ item.id }}').style.display === 'block' ? 'none' : 'block';">
+            Edit
+          </button>
+          <form method="POST" action="{{ url_for('admin.toggle_faq', item_id=item.id) }}" style="display:inline;">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="admin-btn admin-btn--sm">
+              {% if item.is_published %}Hide{% else %}Publish{% endif %}
+            </button>
+          </form>
+          <form method="POST" action="{{ url_for('admin.delete_faq', item_id=item.id) }}" style="display:inline;">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="admin-btn admin-btn--sm admin-btn--danger"
+                    data-confirm="Delete this FAQ?">Delete</button>
+          </form>
+        </div>
+      </div>
+      <div class="faq-admin-item__a">{{ item.answer }}</div>
+
+      <div id="edit-{{ item.id }}" style="display:none;margin-top:1rem;">
+        <form method="POST" action="{{ url_for('admin.edit_faq', item_id=item.id) }}" class="admin-form">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <div class="admin-form__row">
+            <label>Question</label>
+            <input type="text" name="question" value="{{ item.question }}" required maxlength="300">
+          </div>
+          <div class="admin-form__row">
+            <label>Answer</label>
+            <textarea name="answer" required>{{ item.answer }}</textarea>
+          </div>
+          <div class="admin-form__row">
+            <label>Sort order</label>
+            <input type="number" name="sort_order" value="{{ item.sort_order }}">
+          </div>
+          <button type="submit" class="admin-btn admin-btn--primary">Save Changes</button>
+        </form>
+      </div>
+    </div>
+  {% endfor %}
+{% else %}
+  <div class="admin-card admin-empty">No FAQs yet. Add one above.</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,133 @@
+{% extends "public/public_base.html" %}
+
+{% block title %}Facilities — Baloch Boys Hostel, Makli, Thatta{% endblock %}
+{% block meta_description %}Facilities at Baloch Boys Hostel: three meals a day, clean drinking water, Wi-Fi, electricity, and a bed for every resident.{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<section class="page-hero">
+  <div class="page-hero__bg"
+       style="background-image:url('{{ url_for('static', filename='uploads/gallery/facilities-hero.jpg') }}');"
+       aria-hidden="true"></div>
+  <div class="page-hero__gradient" aria-hidden="true"></div>
+
+  <div class="container">
+    <div class="page-hero__inner">
+      <nav class="page-hero__breadcrumb" aria-label="Breadcrumb">
+        <a href="{{ url_for('public.home') }}">Home</a>
+        <span aria-hidden="true">/</span>
+        <span>Facilities</span>
+      </nav>
+      <h1 data-reveal>Our <span class="text-gold">Facilities</span></h1>
+      <p class="lead" data-reveal>
+        These are the confirmed facilities provided at Baloch Boys Hostel.
+        We list exactly what residents get — nothing more, nothing implied.
+      </p>
+    </div>
+  </div>
+</section>
+
+{# ---------- FACILITIES GRID ---------- #}
+<section class="section">
+  <div class="container">
+    {# DB HOOK: If the admin manages facilities in the database, iterate
+       over that instead. Below is the exact confirmed list from the brief. #}
+
+    <div class="icon-grid">
+      <article class="glass icon-card" data-reveal>
+        <div class="icon-card__icon icon-card__icon--gold" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none">
+            <path d="M4 3v7a3 3 0 0 0 6 0V3M7 10v11M15 3c-1.5 1-2 3-2 5v4h4V8c0-2-.5-4-2-5ZM15 12v9"
+                  stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3>Three Times Meal</h3>
+        <p>
+          Residents receive three meals a day — breakfast, lunch and dinner —
+          prepared and served at the hostel.
+        </p>
+      </article>
+
+      <article class="glass icon-card" data-reveal>
+        <div class="icon-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none">
+            <path d="M12 3s6 6.5 6 11a6 6 0 1 1-12 0c0-4.5 6-11 6-11Z"
+                  stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3>Clean Drinking Water</h3>
+        <p>
+          Filtered clean drinking water is available to residents throughout the day.
+        </p>
+      </article>
+
+      <article class="glass icon-card" data-reveal>
+        <div class="icon-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none">
+            <path d="M2.5 9a15 15 0 0 1 19 0M5.5 12.5a10.5 10.5 0 0 1 13 0M8.5 16a6 6 0 0 1 7 0"
+                  stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+            <circle cx="12" cy="19.5" r="1.4" fill="currentColor"/>
+          </svg>
+        </div>
+        <h3>Wi-Fi</h3>
+        <p>
+          Wi-Fi internet access is provided at the hostel so residents can stay connected
+          for study and communication.
+        </p>
+      </article>
+
+      <article class="glass icon-card" data-reveal>
+        <div class="icon-card__icon icon-card__icon--gold" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none">
+            <path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"
+                  stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3>Electricity</h3>
+        <p>
+          Reliable electricity supply is maintained at the hostel for lighting,
+          charging and everyday use by residents.
+        </p>
+      </article>
+
+      <article class="glass icon-card" data-reveal>
+        <div class="icon-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="28" height="28" fill="none">
+            <path d="M3 18v-6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6M3 18h18M6 10V7a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v3"
+                  stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <h3>Beds</h3>
+        <p>
+          A bed is provided for every resident. Capacity is managed so that residents
+          are not overcrowded.
+        </p>
+      </article>
+    </div>
+
+    <div class="glass" style="padding:1.6rem 1.8rem;margin-top:2.5rem;text-align:center;" data-reveal>
+      <p style="color:var(--text-mid);margin:0;font-size:0.92rem;">
+        Have a specific question about a facility? <a href="{{ url_for('public.contact') }}" style="color:var(--cyan);">Contact us</a>.
+      </p>
+    </div>
+  </div>
+</section>
+
+{# ---------- CTA ---------- #}
+<section class="section">
+  <div class="container">
+    <div class="glass glass--hi" style="padding:clamp(2rem,4vw,3rem);text-align:center;" data-reveal>
+      <h2 style="margin-bottom:0.7rem;">Apply for admission</h2>
+      <p style="color:var(--text-mid);max-width:52ch;margin:0 auto 1.5rem;">
+        Reserve your place at Baloch Boys Hostel — submit the online form to get started.
+      </p>
+      <a href="{{ url_for('public.admission') }}" class="btn btn--primary">Start Application</a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

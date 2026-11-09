@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Page Not Found — Baloch Boys Hostel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/public.css') }}">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background-color: var(--navy-950);
+      background-image: var(--grad-aurora);
+      color: var(--text-mid);
+      font-family: var(--font-body);
+      text-align: center;
+    }
+    .error-container {
+      max-width: 600px;
+      padding: 2rem;
+      z-index: 10;
+    }
+    .error-code {
+      font-family: var(--font-display);
+      font-size: clamp(6rem, 15vw, 10rem);
+      font-weight: 700;
+      line-height: 1;
+      background: var(--grad-gold);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 0;
+      letter-spacing: -0.03em;
+    }
+    .error-title {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3rem);
+      color: var(--text-hi);
+      margin-top: 0;
+      margin-bottom: 1rem;
+    }
+    .error-desc {
+      font-size: 1.1rem;
+      color: var(--text-mid);
+      margin-bottom: 2.5rem;
+      line-height: 1.6;
+    }
+    .error-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="error-container">
+    <div class="error-code">404</div>
+    <h1 class="error-title">Page not found</h1>
+    <p class="error-desc">
+      The page you're looking for doesn't exist, or has been moved. Let's get you back on track.
+    </p>
+    <div class="error-actions">
+      <a href="{{ url_for('public.home') }}" class="btn btn--primary">Back to Home</a>
+      <a href="{{ url_for('public.contact') }}" class="btn btn--ghost">Contact Us</a>
+    </div>
+  </div>
+</body>
+</html>

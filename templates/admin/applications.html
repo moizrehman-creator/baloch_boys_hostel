@@ -1,0 +1,88 @@
+{% extends "admin/admin_base.html" %}
+{% block title %}Applications — Admin{% endblock %}
+{% block page_title %}Applications{% endblock %}
+
+{% block content %}
+<h1 class="admin-h1">Admission Applications</h1>
+<p class="admin-sub">{{ applications|length }} total · filter below</p>
+
+{# ---------- Stats ---------- #}
+<div class="admin-stats">
+  <div class="admin-stat">
+    <span class="admin-stat__value">{{ stats.total }}</span>
+    <span class="admin-stat__label">Total</span>
+  </div>
+  <div class="admin-stat admin-stat--cyan">
+    <span class="admin-stat__value">{{ stats.submitted }}</span>
+    <span class="admin-stat__label">Submitted</span>
+  </div>
+  <div class="admin-stat admin-stat--gold">
+    <span class="admin-stat__value">{{ stats.under_review }}</span>
+    <span class="admin-stat__label">Under Review</span>
+  </div>
+  <div class="admin-stat">
+    <span class="admin-stat__value">{{ stats.approved }}</span>
+    <span class="admin-stat__label">Approved</span>
+  </div>
+  <div class="admin-stat">
+    <span class="admin-stat__value">{{ stats.confirmed }}</span>
+    <span class="admin-stat__label">Confirmed</span>
+  </div>
+  <div class="admin-stat">
+    <span class="admin-stat__value">{{ stats.rejected }}</span>
+    <span class="admin-stat__label">Rejected</span>
+  </div>
+</div>
+
+{# ---------- Filters ---------- #}
+<div class="admin-filters">
+  <a href="{{ url_for('admin.applications') }}"
+     class="admin-filter {% if not current_filter %}is-active{% endif %}">All</a>
+  {% for s in ['submitted', 'under_review', 'approved', 'confirmed', 'rejected'] %}
+    <a href="{{ url_for('admin.applications', status=s) }}"
+       class="admin-filter {% if current_filter == s %}is-active{% endif %}">
+      {{ s.replace('_',' ').title() }}
+    </a>
+  {% endfor %}
+  <input type="search" class="admin-search" placeholder="Search name, ref, phone…">
+</div>
+
+{# ---------- Table ---------- #}
+<div class="admin-card admin-card--tight">
+  {% if applications and applications|length > 0 %}
+    <div class="admin-table-wrap">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Reference</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Room</th>
+            <th>Status</th>
+            <th>Submitted</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for app in applications %}
+            <tr>
+              <td><strong>{{ app.reference }}</strong></td>
+              <td>{{ app.full_name }}</td>
+              <td>{{ app.phone }}</td>
+              <td>{{ app.preferred_room }}</td>
+              <td><span class="status-pill status-pill--{{ app.status }}">{{ app.status_label() }}</span></td>
+              <td>{{ app.created_at.strftime('%d %b %Y') }}</td>
+              <td>
+                <a href="{{ url_for('admin.application_details', app_id=app.id) }}"
+                   class="admin-btn admin-btn--sm">Open</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <div class="admin-empty">No applications yet.</div>
+  {% endif %}
+</div>
+{% endblock %}

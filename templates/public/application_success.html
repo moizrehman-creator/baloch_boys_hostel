@@ -1,0 +1,92 @@
+{% extends "public/public_base.html" %}
+
+{% block title %}Application Submitted — Baloch Boys Hostel{% endblock %}
+{% block meta_description %}Your application to Baloch Boys Hostel has been submitted successfully. Keep your reference number to track your application.{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/admission.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<section class="section" style="padding-top:calc(var(--nav-h) + 4rem);">
+  <div class="container" style="max-width:720px;">
+    <div class="glass glass--hi success-card" data-reveal style="text-align:center;padding:clamp(2rem,5vw,3.5rem);">
+
+      <div class="success-icon" aria-hidden="true">
+        <svg viewBox="0 0 52 52" width="72" height="72" fill="none">
+          <circle cx="26" cy="26" r="24" stroke="var(--cyan)" stroke-width="2" opacity="0.35"/>
+          <path d="M16 27l7 7 13-14" stroke="var(--cyan)" stroke-width="3"
+                stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+
+      <span class="eyebrow" style="justify-content:center;">Application Received</span>
+      <h1 style="font-size:clamp(1.9rem,4vw,2.8rem);margin-bottom:1rem;">Thank you</h1>
+      <p style="color:var(--text-mid);max-width:52ch;margin:0 auto 2rem;">
+        Your application to Baloch Boys Hostel has been submitted successfully.
+        Please save your reference number below — you'll need it, along with
+        your phone number, to track your application.
+      </p>
+
+      {% if reference_number %}
+        <div class="ref-box">
+          <span class="ref-box__label">Your Application Reference</span>
+          <strong class="ref-box__value" id="refValue">{{ reference_number }}</strong>
+          <button type="button" class="btn btn--ghost ref-box__copy" id="copyRef">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+              <rect x="9" y="9" width="12" height="12" rx="2"
+                    stroke="currentColor" stroke-width="1.8"/>
+              <path d="M5 15V5a2 2 0 0 1 2-2h10" stroke="currentColor"
+                    stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+            Copy
+          </button>
+        </div>
+      {% endif %}
+
+      <div class="success-info">
+        <div class="success-info__row">
+          <strong>What happens next?</strong>
+        </div>
+        <ol>
+          <li>The hostel administration will review your application.</li>
+          <li>You can check the status anytime using the tracking page.</li>
+          <li>If approved, your admission will be confirmed and we'll be in touch.</li>
+        </ol>
+      </div>
+
+      <div class="success-actions">
+        <a href="{{ url_for('public.application_status') }}" class="btn btn--primary">Track Application</a>
+        <a href="{{ url_for('public.home') }}" class="btn btn--ghost">Back to Home</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  (function () {
+    const btn = document.getElementById('copyRef');
+    const ref = document.getElementById('refValue');
+    if (!btn || !ref) return;
+    btn.addEventListener('click', async function () {
+      try {
+        await navigator.clipboard.writeText(ref.textContent.trim());
+        const original = btn.innerHTML;
+        btn.innerHTML = 'Copied';
+        setTimeout(() => { btn.innerHTML = original; }, 1600);
+      } catch (err) {
+        // Clipboard API might be blocked; fall back to selecting the text.
+        const range = document.createRange();
+        range.selectNodeContents(ref);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+      }
+    });
+  })();
+</script>
+{% endblock %}

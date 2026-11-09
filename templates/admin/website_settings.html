@@ -1,0 +1,58 @@
+{% extends "admin/admin_base.html" %}
+{% block title %}Website Settings — Admin{% endblock %}
+{% block page_title %}Website Settings{% endblock %}
+
+{% block content %}
+<h1 class="admin-h1">Website Settings</h1>
+<p class="admin-sub">Public contact information and site content</p>
+
+<div class="admin-card">
+  <form method="POST" class="admin-form">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <div class="admin-form__row">
+      <label>Contact Phone Number</label>
+      <input type="tel" name="contact_phone"
+             value="{{ site_settings.contact_phone or '' }}"
+             placeholder="+92 300 1234567">
+      <small style="color:var(--text-lo);font-size:0.78rem;display:block;margin-top:0.3rem;">
+        Shown in the footer and on the contact page. Leave blank to hide.
+      </small>
+    </div>
+
+    <div class="admin-form__row">
+      <label>WhatsApp Number</label>
+      <input type="tel" name="whatsapp_number"
+             value="{{ site_settings.whatsapp_number or '' }}"
+             placeholder="+92 300 1234567">
+      <small style="color:var(--text-lo);font-size:0.78rem;display:block;margin-top:0.3rem;">
+        Enables the WhatsApp contact button. Leave blank to hide.
+      </small>
+    </div>
+
+    <div class="admin-form__row">
+      <label>Hero Image Filename</label>
+      <input type="text" name="hero_image"
+             value="{{ site_settings.hero_image or '' }}"
+             placeholder="hero.jpg">
+      <small style="color:var(--text-lo);font-size:0.78rem;display:block;margin-top:0.3rem;">
+        Filename inside <code>static/uploads/gallery/</code>. Upload images in the Gallery tab first.
+      </small>
+    </div>
+
+    <button type="submit" class="admin-btn admin-btn--primary">Save Settings</button>
+  </form>
+</div>
+
+<div class="admin-card">
+  <h3 style="font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);margin:0 0 1rem;">
+    Admin Credentials
+  </h3>
+  <p style="color:var(--text-mid);font-size:0.9rem;margin:0 0 1rem;">
+    You are logged in as <strong style="color:var(--text-hi);">{{ session.admin_username }}</strong>.
+  </p>
+  <a href="{{ url_for('admin.change_password') }}" class="admin-btn admin-btn--primary">
+    Change Password
+  </a>
+</div>
+{% endblock %}

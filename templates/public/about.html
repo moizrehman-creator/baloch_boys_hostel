@@ -1,0 +1,154 @@
+{% extends "public/public_base.html" %}
+
+{% block title %}About Us — Baloch Boys Hostel, Makli, Thatta{% endblock %}
+{% block meta_description %}Learn about Baloch Boys Hostel in Makli, Thatta: our mission, our environment, and the way we support students in Sindh, Pakistan.{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/pages.css') }}">
+{% endblock %}
+
+{% block content %}
+
+{# ---------- PAGE HERO ---------- #}
+<section class="page-hero">
+  <div class="page-hero__bg"
+       style="background-image:url('{{ url_for('static', filename='uploads/gallery/about-hero.jpg') }}');"
+       aria-hidden="true"></div>
+  <div class="page-hero__gradient" aria-hidden="true"></div>
+
+  <div class="container">
+    <div class="page-hero__inner">
+      <nav class="page-hero__breadcrumb" aria-label="Breadcrumb">
+        <a href="{{ url_for('public.home') }}">Home</a>
+        <span aria-hidden="true">/</span>
+        <span>About</span>
+      </nav>
+      <h1 data-reveal>About <span class="text-gold">Baloch Boys Hostel</span></h1>
+      <p class="lead" data-reveal>
+        A student residence in Makli, Thatta — built around comfort, focus and the
+        everyday essentials a student needs to live well and study seriously.
+      </p>
+    </div>
+  </div>
+</section>
+
+{# ---------- INTRODUCTION ---------- #}
+<section class="section">
+  <div class="container">
+    <div class="split">
+      <div class="split__media" data-reveal="left">
+        <img src="{{ url_for('static', filename='uploads/gallery/about-intro.jpg') }}"
+             alt="Baloch Boys Hostel accommodation in Makli, Thatta"
+             loading="lazy" width="800" height="1000">
+      </div>
+      <div class="split__text" data-reveal="right">
+        <span class="eyebrow">Our Hostel</span>
+        <h2>Comfortable student living in Makli, Thatta</h2>
+        <p>
+          Baloch Boys Hostel provides student accommodation in Makli, Thatta, Sindh, Pakistan.
+          The hostel is organised around a simple, dependable promise: a clean bed, three meals
+          a day, clean drinking water, electricity and Wi-Fi — the basics done properly, so
+          residents can focus on their education.
+        </p>
+        <p>
+          We are a hostel, not a hotel. Our residents come here to study, and every part of the
+          residence is set up to support that. Quiet hours are respected, shared spaces are kept
+          tidy, and administration stays reachable for the questions that come up day to day.
+        </p>
+
+        <ul class="pill-list">
+          <li>Makli · Thatta</li>
+          <li>Student accommodation</li>
+          <li>Managed residence</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ---------- MISSION & VISION ---------- #}
+<section class="section">
+  <div class="container">
+    <div class="section-head section-head--center" data-reveal>
+      <span class="eyebrow">Mission &amp; Vision</span>
+      <h2>What we're here for</h2>
+    </div>
+
+    <div class="grid grid-2">
+      <article class="glass icon-card" data-reveal>
+        <div class="icon-card__icon icon-card__icon--gold" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none">
+            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/>
+            <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.7"/>
+            <circle cx="12" cy="12" r="1" fill="currentColor"/>
+          </svg>
+        </div>
+        <h3>Our Mission</h3>
+        <p>
+          To give every resident a safe, comfortable and well-managed place to live,
+          with the daily essentials of food, water, electricity, beds and Wi-Fi
+          provided reliably so that their studies come first.
+        </p>
+      </article>
+
+      <article class="glass icon-card" data-reveal>
+        <div class="icon-card__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none">
+            <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12Z"
+                  stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+            <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.7"/>
+          </svg>
+        </div>
+        <h3>Our Vision</h3>
+        <p>
+          To be the hostel in Makli that residents recommend to their friends — not
+          because it is the flashiest, but because it is the most reliable place to
+          live during their time as students.
+        </p>
+      </article>
+    </div>
+  </div>
+</section>
+
+{# ---------- HOSTEL ENVIRONMENT ---------- #}
+<section class="section">
+  <div class="container">
+    <div class="split split--reverse">
+      <div class="split__media" data-reveal="right">
+        <img src="{{ url_for('static', filename='uploads/gallery/about-environment.jpg') }}"
+             alt="Hostel environment at Baloch Boys Hostel"
+             loading="lazy" width="800" height="1000">
+      </div>
+      <div class="split__text" data-reveal="left">
+        <span class="eyebrow">The Environment</span>
+        <h2>A calm, orderly place to live</h2>
+        <p>
+          The hostel is managed by an on-site administration that keeps the building
+          running, handles maintenance, and stays reachable for residents when they
+          need help. Shared spaces are cleaned regularly, meals are served on a daily
+          schedule, and the water and electricity supply is kept stable.
+        </p>
+        <p>
+          Residents are expected to look out for each other and for the residence itself.
+          That simple standard is what keeps the hostel comfortable for everyone who lives
+          here — short-term and long-term alike.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ---------- CTA STRIP ---------- #}
+<section class="section">
+  <div class="container">
+    <div class="glass glass--hi" style="padding:clamp(2rem,4vw,3rem);text-align:center;" data-reveal>
+      <h2 style="margin-bottom:0.7rem;">Ready to apply?</h2>
+      <p style="color:var(--text-mid);max-width:52ch;margin:0 auto 1.5rem;">
+        Submit your application online — you'll receive a reference number to track its progress.
+      </p>
+      <a href="{{ url_for('public.admission') }}" class="btn btn--primary">Apply for Admission</a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
